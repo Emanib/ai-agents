@@ -37,7 +37,7 @@ def send_message(user_message, system_prompt="You are a helpful assistant."):
                              This is sent before the user message, every time.
 
     Returns:
-        str: The AI's reply text.
+        str: The AI's reply text, or an error message if something went wrong.
 
     HOW IT WORKS:
         We build a 'messages' list with two entries:
@@ -53,6 +53,11 @@ def send_message(user_message, system_prompt="You are a helpful assistant."):
     #           in the 'messages' list between the system and user entries.
     """
     api_key = os.getenv('OPENROUTER_API_KEY')
+
+    # If the .env file is missing or the key was not filled in, tell the user
+    # immediately rather than making a doomed API call that will just hang.
+    if not api_key or api_key == 'paste-your-key-here':
+        return "⚠️ No API key found. Add your OpenRouter key to the .env file and restart the app."
 
     # The Authorization header tells OpenRouter who we are.
     # "Bearer" is just a standard prefix for API key authentication.
@@ -80,7 +85,16 @@ def send_message(user_message, system_prompt="You are a helpful assistant."):
         timeout=30
     )
 
-    # The response comes back as JSON. We dig into it to get the reply text.
-    # QUESTION: What happens if the API call fails (no internet, bad key)?
-    #           Try printing response.status_code to see the HTTP status code.
-    return response.json()['choices'][0]['message']['content']
+    result = response.json()
+
+    # OpenRouter sometimes returns HTTP 200 but with an 'error' field instead
+    # of 'choices' — this happens with a bad API key or an invalid request.
+    # QUESTION: Print result here and see what OpenRouter actually sends back.
+    if 'error' in result:
+        error_message = result['error'].get('message', 'Unknown API error')
+        return f"⚠️ OpenRouter error: {error_message}"
+
+    if 'choices' not in result:
+        return f"⚠️ Unexpected response from OpenRouter: {result}"
+
+    return result['choices'][0]['message']['content']
