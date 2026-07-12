@@ -28,5 +28,5 @@ This assignment is graded on a 100 point scale. All grading is based on your dem
 - [ ] CSV files updated with your own resume data
 - [ ] `home.html` updated with your name, bio, and photo
 - [ ] App runs from `python app.py` (no Docker required)
-- [ ] Code pushed to your branch: `git push origin your-netid`
+- [ ] Code pushed to your fork: `git push origin main`
 - [ ] Demo video recorded and uploaded via the [homework submission form](https://docs.google.com/forms/d/e/1FAIpQLSdBfMvBMgC-xT34M_gv9plffbaf4Kh4LtWTvOsLT9I4RobNZg/viewform)

@@ -81,15 +81,36 @@ homework 0/
 
 ### Step 1: Get the code
 
-Go to the course repo, create a branch with your netID, and clone it locally:
+Fork the course repo into your own GitHub account (click **Fork** at the top of
+https://github.com/spocs-coders/ai-agents), then clone your fork locally:
 
 ```bash
-git clone https://github.com/megacodemo/spocs-hello-world
-cd spocs-hello-world
-git checkout -b your-netid
+git clone https://github.com/YOUR-USERNAME/ai-agents
+cd ai-agents
 ```
 
-All your work goes on your own branch. You submit by pushing to it.
+All your work happens directly in your fork — you don't need push access to
+the course repo. You'll reuse this same fork for every homework released
+throughout the course.
+
+Add the course repo as an `upstream` remote so you can pull in new homeworks
+as they're released:
+
+```bash
+git remote add upstream https://github.com/spocs-coders/ai-agents
+```
+
+When a new homework is released, pull it into your fork with:
+
+```bash
+git fetch upstream
+git merge upstream/main
+git push origin main
+```
+
+Since each homework lives in its own folder, this should merge cleanly. If you
+hit a conflict, it means you edited a file that was also updated upstream —
+resolve it by keeping your changes and re-adding the new content, then commit.
 
 ### Step 2: Run the setup script
 
@@ -235,7 +256,7 @@ When you're ready to submit:
 ```bash
 git add .
 git commit -m "Homework 0 — your-netid"
-git push origin your-netid
+git push origin main
 ```
 
 Then record a short demo video showing:
